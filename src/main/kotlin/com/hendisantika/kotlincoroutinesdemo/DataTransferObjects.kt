@@ -20,3 +20,10 @@ class CounterEvent(
 )
 
 enum class CounterAction { UP, DOWN }
+
+class CounterState(
+    val value: Long,
+    val at: ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC"))
+) {
+    fun toEvent(action: CounterAction) = CounterEvent(value, action, at)
+}
