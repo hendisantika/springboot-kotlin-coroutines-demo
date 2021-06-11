@@ -1,5 +1,6 @@
 package com.hendisantika.kotlincoroutinesdemo
 
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -12,4 +13,7 @@ import org.springframework.web.bind.annotation.RestController
  * Time: 15.43
  */
 @RestController
-class CounterController(private val repo: CounterRepository)
+class CounterController(private val counterRepository: CounterRepository) {
+    @GetMapping("/")
+    suspend fun getCounterState(): CounterState = counterRepository.get()
+}
