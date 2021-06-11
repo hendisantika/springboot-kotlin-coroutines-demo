@@ -16,4 +16,9 @@ import org.springframework.stereotype.Repository
 @Repository
 class CounterRepository(private val redisTemplate: ReactiveRedisTemplate<String, CounterEvent>) {
     suspend fun get(): CounterState = CounterState(redisTemplate.opsForValue().incrementAndAwait(COUNTER_KEY, 0L))
+
+    companion object {
+        private const val COUNTER_CHANNEL = "COUNTER_CHANNEL"
+        private const val COUNTER_KEY = "COUNTER"
+    }
 }
