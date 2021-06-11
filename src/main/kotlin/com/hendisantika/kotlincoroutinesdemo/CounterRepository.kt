@@ -1,6 +1,7 @@
 package com.hendisantika.kotlincoroutinesdemo
 
 import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.core.incrementAndAwait
 import org.springframework.stereotype.Repository
 
 /**
@@ -13,4 +14,6 @@ import org.springframework.stereotype.Repository
  * Time: 15.36
  */
 @Repository
-class CounterRepository(private val redisTemplate: ReactiveRedisTemplate<String, CounterEvent>)
+class CounterRepository(private val redisTemplate: ReactiveRedisTemplate<String, CounterEvent>) {
+    suspend fun get(): CounterState = CounterState(redisTemplate.opsForValue().incrementAndAwait(COUNTER_KEY, 0L))
+}
