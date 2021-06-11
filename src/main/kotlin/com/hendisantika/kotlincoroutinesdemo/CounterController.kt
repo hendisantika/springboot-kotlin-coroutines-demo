@@ -21,4 +21,6 @@ class CounterController(private val counterRepository: CounterRepository) {
     @PutMapping("/up")
     suspend fun upCounterState(): CounterState = counterRepository.up()
 
+    @PutMapping("/down")
+    suspend fun downCounterState(): CounterState = counterRepository.down()
 }
