@@ -1,6 +1,7 @@
 package com.hendisantika.kotlincoroutinesdemo
 
 import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.core.decrementAndAwait
 import org.springframework.data.redis.core.incrementAndAwait
 import org.springframework.data.redis.core.sendAndAwait
 import org.springframework.stereotype.Repository
@@ -21,6 +22,11 @@ class CounterRepository(private val redisTemplate: ReactiveRedisTemplate<String,
     suspend fun up(): CounterState =
         CounterState(redisTemplate.opsForValue().incrementAndAwait(COUNTER_KEY)).also {
             redisTemplate.sendAndAwait(COUNTER_CHANNEL, it.toEvent(CounterAction.UP))
+        }
+
+    suspend fun down(): CounterState =
+        CounterState(redisTemplate.opsForValue().decrementAndAwait(COUNTER_KEY)).also {
+            redisTemplate.sendAndAwait(COUNTER_CHANNEL, it.toEvent(CounterAction.DOWN))
         }
 
     companion object {
