@@ -1,9 +1,8 @@
 package com.hendisantika.kotlincoroutinesdemo
 
-import org.springframework.data.redis.core.ReactiveRedisTemplate
-import org.springframework.data.redis.core.decrementAndAwait
-import org.springframework.data.redis.core.incrementAndAwait
-import org.springframework.data.redis.core.sendAndAwait
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import org.springframework.data.redis.core.*
 import org.springframework.stereotype.Repository
 
 /**
@@ -28,6 +27,9 @@ class CounterRepository(private val redisTemplate: ReactiveRedisTemplate<String,
         CounterState(redisTemplate.opsForValue().decrementAndAwait(COUNTER_KEY)).also {
             redisTemplate.sendAndAwait(COUNTER_CHANNEL, it.toEvent(CounterAction.DOWN))
         }
+
+    suspend fun stream(): Flow<CounterEvent> =
+        redisTemplate.listenToChannelAsFlow(COUNTER_CHANNEL).map { it.message }
 
     companion object {
         private const val COUNTER_CHANNEL = "COUNTER_CHANNEL"
