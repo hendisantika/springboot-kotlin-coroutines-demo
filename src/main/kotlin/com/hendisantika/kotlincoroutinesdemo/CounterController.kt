@@ -1,5 +1,7 @@
 package com.hendisantika.kotlincoroutinesdemo
 
+import kotlinx.coroutines.flow.Flow
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RestController
@@ -23,4 +25,7 @@ class CounterController(private val counterRepository: CounterRepository) {
 
     @PutMapping("/down")
     suspend fun downCounterState(): CounterState = counterRepository.down()
+
+    @GetMapping(value = ["/"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    suspend fun stream(): Flow<CounterEvent> = counterRepository.stream()
 }
