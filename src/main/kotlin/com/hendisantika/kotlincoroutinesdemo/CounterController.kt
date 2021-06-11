@@ -26,6 +26,6 @@ class CounterController(private val counterRepository: CounterRepository) {
     @PutMapping("/down")
     suspend fun downCounterState(): CounterState = counterRepository.down()
 
-    @GetMapping(value = ["/"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    @GetMapping(value = ["/stream"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     suspend fun stream(): Flow<CounterEvent> = counterRepository.stream()
 }
