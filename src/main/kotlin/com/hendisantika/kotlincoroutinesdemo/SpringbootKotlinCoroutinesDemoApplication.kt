@@ -6,6 +6,9 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
 import org.springframework.data.redis.core.ReactiveRedisTemplate
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
+import org.springframework.data.redis.serializer.RedisSerializationContext.newSerializationContext
+import org.springframework.data.redis.serializer.StringRedisSerializer
 
 @SpringBootApplication
 class SpringbootKotlinCoroutinesDemoApplication {
